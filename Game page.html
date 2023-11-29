@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Guess the word</title>
+    <meta name=" =viewport" content="width=device-width, initial-sclae=1.0">
+
+</head>
+<body>
+    <div class="Word">
+        <center><h1>Guess the word</h1></center>
+        <div class="content">
+           
+           <input type="text" class="typing-input" maxlenght="1">
+           
+           <div class="inputs">
+               <input type="text" disabled>
+               <input type="text" disabled>
+               <input type="text" disabled>
+               <input type="text" disabled>
+               <input type="text" disabled>
+               <input type="text" disabled>
+
+               
+           </div>
+
+                
+
+           
+            <div class="details">
+                <p id="hint" class="hint">Hint: <span>Hint will be shown here</span></p>
+                <p id="guessLeft"class="guess-left">Remaining Guesses: <span></span></p>
+                <p id="wrongLetter"class="hint">Wrong letters: <span></span></p>
+            </div>
+            <button class=" reset-btn">reset Game</button>
+        </div>
+    </div>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #ffffff;
+        }
+
+        .Word {
+            width: 430px;
+            background: #ccc458;
+            border-radius: 10px;
+        }
+
+            .Word h1 {
+                font-size: 25px;
+                font-weight: 500;
+                padding: 20px 25px;
+                border-bottom: 1px solid #808080;
+            }
+
+            .Word .content {
+                margin: 25px 25px 35px;
+            }
+            .content .typing-input {
+                opacity: 0;
+                z-index: -999;
+                position: absolute;
+
+
+            }
+
+        .content .inputs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .inputs input {
+            height: 57px;
+            width: 56px;
+            margin: 4px;
+            color: #ff0000;
+            font-size: 24px;
+            font-weight: 500;
+            text-align: center;
+            background: none;
+            border-radius: 5px;
+            text-transform: uppercase;
+            border: 1px solid #808080;
+        }
+
+        inputs input:first-child {
+            margin-left: 0px;
+        }
+
+        body {
+            background-image: url('Guess the word background img.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+
+        .content.details {
+            margin: 20px 0 25px;
+        }
+
+        .details p {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+        .content .reset-btn {
+            width: 100%;
+            cursor: pointer;
+            outline: none;
+            color: #ff0000;
+            font-size: 17px;
+            padding: 15px 0;
+            background: #ccc458;
+            border-radius: 10px;
+        }
+    </style>
+    <script>
+        const inputs = document.querySelector("#inputs");
+        resetBtn = document.querySelector("#resetBtn");
+        hint = document.querySelector("#hint");
+        guessLeft = document.querySelector("#guessLeft");
+        wrongLetter = document.querySelector("#wrongLetter");
+        typingInput = document.querySelector("#typingInput");
+
+
+          
+        let word, maxGuesses, corrects = [], incorrects = [];
+
+        function randomword() {
+            document.getElementById("h1").style.color = "#FF00FF";
+
+            //Getting the random object from wordList
+            let ranObj = wordList[Math.floor(math.random() * wordList.lenght)];
+            word = ranObj.word; //Getting the word of a random object
+            maxGuesses = 8;
+            console.log(word);
+
+            hint.innerText = ranObj.hint;
+            guessLeft.innerText = maxGuesses;
+            let html = "";
+            for (let i = 0; index < word.lenght; i++) {
+                const element = array[i];
+                html = '<input type="text" disabled>';
+            }
+            inputs.innerHTML = html;
+        }
+        function initGame(e) {
+            let key = e.target.value;
+            if (key.match(/^[A-Za-z]+$/) && !incorrects.include('${ key}')
+                && !corrects.include(key)) {
+                console.log(key);
+                if (word.includes(key)) {
+                    for (let i = 0; index < word.lenght; i++) {
+                        if (word[i] === key) {
+                            corrects.push(key); 
+                            inputs.querySelectorAll("input")[i].value = key;
+
+                        }
+                        else {
+                            maxGuesses--;
+                            incorrects.push('${ key }');
+
+                        }
+                    }
+                }
+                wrongLetter.innerText = incorrects;
+                typinginput.value = "";
+            }
+
+        randomWord();
+        resetBtn.addEventListener("click", randomWord);
+        typingInput.addEventListener("input", intGame);
+        document.addEventListener("keydown", () => typinginput.focus());
+
+
+    </script>
+</body>
+
+
+</html>
