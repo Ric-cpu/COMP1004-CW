@@ -10,26 +10,30 @@
     <div class="container">
         <div id="loginSection" class="section">
             <h1>Login</h1>
+            <input type="text" id="firstName" placeholder="First Name" required>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+            <input type="date" id="dob" placeholder="Date of Birth" required>
+            <input type="text" id="location" placeholder="Location" required>
             <input type="text" id="username" placeholder="Username" required>
             <input type="password" id="password" placeholder="Password" required>
             <button onclick="authenticate()">Login</button>
             <p id="loginError" class="error-msg"></p>
         </div>
 
-            <div id="gameSection" class="section" style="display: none;">
-                <h1>Guess the Word Game</h1>
-                <p class="instruction">Guess the word: <span id="wordToGuess"></span></p>
-                <p class="instruction">Attempts left: <span id="attemptsLeft"></span></p>
-                <input type="text" id="guessInput" placeholder="Enter your guess">
-                <button onclick="checkGuess()">Check Guess</button>
-                <button id="hintButton" style="display: none;" onclick="displayHint()">Hint</button>
-                <p id="hint"></p>
-                <p id="hint" class="instruction"></p>
-                <p id="hintMessage"></p>
-                <p id="message" class="error-msg"></p>
-                <p id="wordLength"></p>
-              
-            </div>
+        <div id="gameSection" class="section" style="display: none;">
+            <h1>Guess the Word Game</h1>
+            <p class="instruction">Guess the word: <span id="wordToGuess"></span></p>
+            <p class="instruction">Attempts left: <span id="attemptsLeft"></span></p>
+            <input type="text" id="guessInput" placeholder="Enter your guess">
+            <button onclick="checkGuess()">Check Guess</button>
+            <button id="hintButton" style="display: none;" onclick="displayHint()">Hint</button>
+            <p id="hint" class="instruction"></p>
+            <p id="message" class="error-msg"></p>
+            <p id="correctGuessCount" class="instruction">Correct Guesses: <span id="correctCount">0</span></p>
+            <button id="refreshButton" onclick="refreshGame()">Refresh</button>
+           
+
+        </div>
         </div>
 
         <script src="script.js"></script>
@@ -114,9 +118,27 @@
                 { username: "user1", password: "password1" },
                 { username: "user2", password: "password2" },
             ];
-            // function is a block of code designed to perform a particular task. In this case it is used to get the input.
-            
 
+            function authenticate() {
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                const loginError = document.getElementById("loginError");
+
+                const authenticatedUser = users.find(user => user.username === username && user.password === password);
+
+                if (authenticatedUser) {
+                    loginError.textContent = "";
+                    showGameSection();
+                } else {
+                    loginError.textContent = "Invalid username or password.";
+                }
+            }
+
+            function showGameSection() {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('gameSection').style.display = 'block';
+                startGame();
+            }
    
 
                 
@@ -140,28 +162,11 @@
             let currentWord = "";
             let attempts = 5;
 
-            function authenticate() {
-                const username = document.getElementById("username").value;
-                const password = document.getElementById("password").value;
-                const loginError = document.getElementById("loginError");
+           
+            let totalAnimals = 12;
+            let correctGuesses = 0;
 
-                const authenticatedUser = users.find(user => user.username === username && user.password === password);
-
-                if (authenticatedUser) {
-                    loginError.textContent = "";
-                    showGameSection();
-                } else {
-                    loginError.textContent = "Invalid username or password.";
-                }
-            }
-
-
-            
-            function showGameSection() {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('gameSection').style.display = 'block';
-                startGame();
-            }
+           
 
             function startGame() {
                 const randomIndex = Math.floor(Math.random() * animalWordsAndHints.length);
@@ -175,29 +180,37 @@
             }
 
             function checkGuess() {
-                const guess = document.getElementById("guessInput").value.toLowerCase();
+                const guess = document.getElementById("guessInput").value.trim().toLowerCase();
                 const message = document.getElementById("message");
                 const hintButton = document.getElementById("hintButton");
+                let isCorrectGuess = false;
 
                 if (attempts > 0) {
-                    if (guess === currentWord) {
+                    if (guess === currentWord.toLowerCase()) {
+                        isCorrectGuess = true;
+                        correctGuesses++;
+                        document.getElementById("correctCount").textContent = correctGuesses;
+                    }
+
+                    if (isCorrectGuess) {
                         message.textContent = "Congratulations! You guessed the word!";
                     } else {
                         attempts--;
                         document.getElementById("attemptsLeft").textContent = attempts;
                         message.textContent = "Incorrect guess. Try again.";
 
-                        if (attempts === 2) { // Display hint button when attempts reach 3
-                            hintButton.style.display = "inline"; // Show the hint button
+                        if (attempts === 2) {
+                            hintButton.style.display = "inline";
                         }
 
-                        if (attempts === 0) { // Handle when attempts are exhausted
-                            hintButton.style.display = "none"; // Hide the hint button if attempts are used up
+                        if (attempts === 0) {
+                            hintButton.style.display = "none";
                             message.textContent = `No more attempts left. The word was: ${currentWord}`;
                         }
                     }
                 }
             }
+
 
 
 
@@ -210,6 +223,9 @@
                 } else {
                     hintElement.textContent = "No hint available for this word.";
                 }
+
+                hintButton.style.display = "none"; 
+                
             }
 
             function revealLetters(word) {
@@ -253,12 +269,28 @@
 
                 document.getElementById("wordLength").textContent = `Word Length: ${currentWord.length}`;
             }
+
+
+            function refreshGame() {
+                attempts = 5; // Reset attempts
+                document.getElementById("attemptsLeft").textContent = attempts;
+                document.getElementById("guessInput").value = ""; // Clear guess input
+                document.getElementById("message").textContent = ""; // Clear message
+                document.getElementById("correctCount").textContent = `${correctGuesses}/${totalAnimals}`;
+                startGame();
+
+                const hintButton = document.getElementById("hintButton");
+                hintButton.style.display = "none"; // Hide hint button after refresh
+
+                resetHint();
+                const hintElement = document.getElementById("hint");
+                hintElement.textContent = ""; // Reset hint text
+
                
-
-
-
-
+            }
+            
 
         </script>
 </body>
 </html>
+
