@@ -1,194 +1,264 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Guess the word</title>
-    <meta name=" =viewport" content="width=device-width, initial-sclae=1.0">
-
+    <meta charset="UTF-8">
+    <title>Guess the Word</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="Word">
-        <center><h1>Guess the word</h1></center>
-        <div class="content">
-           
-           <input type="text" class="typing-input" maxlenght="1">
-           
-           <div class="inputs">
-               <input type="text" disabled>
-               <input type="text" disabled>
-               <input type="text" disabled>
-               <input type="text" disabled>
-               <input type="text" disabled>
-               <input type="text" disabled>
-
-               
-           </div>
-
-                
-
-           
-            <div class="details">
-                <p id="hint" class="hint">Hint: <span>Hint will be shown here</span></p>
-                <p id="guessLeft"class="guess-left">Remaining Guesses: <span></span></p>
-                <p id="wrongLetter"class="hint">Wrong letters: <span></span></p>
-            </div>
-            <button class=" reset-btn">reset Game</button>
+  
+    <div class="container">
+        <div id="loginSection" class="section">
+            <h1>Login</h1>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="authenticate()">Login</button>
+            <p id="loginError" class="error-msg"></p>
         </div>
-    </div>
+
+            <div id="gameSection" class="section" style="display: none;">
+                <h1>Guess the Word Game</h1>
+                <p class="instruction">Guess the word: <span id="wordToGuess"></span></p>
+                <p class="instruction">Attempts left: <span id="attemptsLeft"></span></p>
+                <input type="text" id="guessInput" placeholder="Enter your guess">
+                <button onclick="checkGuess()">Check Guess</button>
+                <button id="hintButton" style="display: none;" onclick="displayHint()">Hint</button>
+                <p id="hint"></p>
+                <p id="hint" class="instruction"></p>
+                <p id="hintMessage"></p>
+                <p id="message" class="error-msg"></p>
+                <p id="wordLength"></p>
+              
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+        <style>
 
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif serif;
-        }
 
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: #ffffff;
-        }
-
-        .Word {
-            width: 430px;
-            background: #ccc458;
-            border-radius: 10px;
-        }
-
-            .Word h1 {
-                font-size: 25px;
-                font-weight: 500;
-                padding: 20px 25px;
-                border-bottom: 1px solid #808080;
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f7f7f7;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
             }
 
-            .Word .content {
-                margin: 25px 25px 35px;
+            .container {
+                width: 300px;
+                margin: 0 auto;
+                margin-top: 100px;
+                padding: 20px;
+                background-color: #f0f0f0;
+                border-radius: 5px;
+                text-align: center;
             }
-            .content .typing-input {
-                opacity: 0;
-                z-index: -999;
-                position: absolute;
 
-
+            input[type="text"],
+            input[type="password"] {
+                width: 100%;
+                padding: 10px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                border-radius: 3px;
+                border: none;
+                outline: none;
             }
 
-        .content .inputs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
 
-        .inputs input {
-            height: 57px;
-            width: 56px;
-            margin: 4px;
-            color: #ff0000;
-            font-size: 24px;
-            font-weight: 500;
-            text-align: center;
-            background: none;
-            border-radius: 5px;
-            text-transform: uppercase;
-            border: 1px solid #808080;
-        }
 
-        inputs input:first-child {
-            margin-left: 0px;
-        }
+            .error-msg {
+                color: red;
+                margin-bottom: 20px;
+            }
 
-        body {
-            background-image: url('Guess the word background img.jpg');
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: 100% 100%;
-        }
+            .instruction {
+                margin-bottom: 5px;
+                font-size: 18px;
+                color: #333;
+            }
 
-        .content.details {
-            margin: 20px 0 25px;
-        }
+            input[type="submit"] {
+                width: 100%;
+                padding: 10px;
+                background-color: #000000;
+                color: red;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                outline: none;
+            }
 
-        .details p {
-            font-size: 19px;
-            margin-bottom: 10px;
-        }
+            button {
+                padding: 10px 20px;
+                margin-top: 10px;
+                background-color: #4caf50;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
-        .content .reset-btn {
-            width: 100%;
-            cursor: pointer;
-            outline: none;
-            color: #ff0000;
-            font-size: 17px;
-            padding: 15px 0;
-            background: #ccc458;
-            border-radius: 10px;
-        }
-    </style>
-    <script>
-        const inputs = document.querySelector("#inputs");
-        resetBtn = document.querySelector("#resetBtn");
-        hint = document.querySelector("#hint");
-        guessLeft = document.querySelector("#guessLeft");
-        wrongLetter = document.querySelector("#wrongLetter");
-        typingInput = document.querySelector("#typingInput");
+                button:hover {
+                    background-color: #45a049;
+                }
 
 
           
-        let word, maxGuesses, corrects = [], incorrects = [];
+        </style>
+        <script>
+            const users = [
+                { username: "user1", password: "password1" },
+                { username: "user2", password: "password2" },
+            ];
+            // function is a block of code designed to perform a particular task. In this case it is used to get the input.
+            
 
-        function randomword() {
-            document.getElementById("h1").style.color = "#FF00FF";
+   
 
-            //Getting the random object from wordList
-            let ranObj = wordList[Math.floor(math.random() * wordList.lenght)];
-            word = ranObj.word; //Getting the word of a random object
-            maxGuesses = 8;
-            console.log(word);
+                
 
-            hint.innerText = ranObj.hint;
-            guessLeft.innerText = maxGuesses;
-            let html = "";
-            for (let i = 0; index < word.lenght; i++) {
-                const element = array[i];
-                html = '<input type="text" disabled>';
+            // Words and hints related to the animal kingdom
+            const animalWordsAndHints = [
+                { word: "elephant", hint: "A large mammal with a long trunk and tusks." },
+                { word: "giraffe", hint: "A tall, long-necked animal with distinct spotted patterns." },
+                { word: "zebra", hint: "A horse-like animal with black-and-white stripes." },
+                { word: "lion", hint: "A large carnivorous feline known as the king of the jungle." },
+                { word: "tiger", hint: "A powerful and striped big cat." },
+                { word: "Penguin", hint: "Flightless bird that swims in the Antarctic." },
+                { word: "Koala", hint: "Marsupial native to Australia known for eating eucalyptus leaves." },
+                { word: "Kangaroo", hint: "Marsupial that hops and carries its young in a pouch." },
+                { word: "Hippopotamus", hint: "Large herbivorous mammal found near water." },
+                { word: "Cheetah", hint: "Fastest land animal, known for its spots and speed." },
+                { word: "Polar Bear", hint: "Arctic dwelling bear with a white fur coat." },
+                { word: "Crocodile", hint: "Large reptile often found in tropical areas near water." },
+            ];
+            
+            let currentWord = "";
+            let attempts = 5;
+
+            function authenticate() {
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                const loginError = document.getElementById("loginError");
+
+                const authenticatedUser = users.find(user => user.username === username && user.password === password);
+
+                if (authenticatedUser) {
+                    loginError.textContent = "";
+                    showGameSection();
+                } else {
+                    loginError.textContent = "Invalid username or password.";
+                }
             }
-            inputs.innerHTML = html;
-        }
-        function initGame(e) {
-            let key = e.target.value;
-            if (key.match(/^[A-Za-z]+$/) && !incorrects.include('${ key}')
-                && !corrects.include(key)) {
-                console.log(key);
-                if (word.includes(key)) {
-                    for (let i = 0; index < word.lenght; i++) {
-                        if (word[i] === key) {
-                            corrects.push(key); 
-                            inputs.querySelectorAll("input")[i].value = key;
 
+
+            
+            function showGameSection() {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('gameSection').style.display = 'block';
+                startGame();
+            }
+
+            function startGame() {
+                const randomIndex = Math.floor(Math.random() * animalWordsAndHints.length);
+                currentWord = animalWordsAndHints[randomIndex].word;
+
+                // Display some letters of the word (here, showing the first and last letters)
+                const wordToGuess = revealLetters(currentWord);
+                document.getElementById("wordToGuess").textContent = wordToGuess;
+
+                document.getElementById("attemptsLeft").textContent = attempts;
+            }
+
+            function checkGuess() {
+                const guess = document.getElementById("guessInput").value.toLowerCase();
+                const message = document.getElementById("message");
+                const hintButton = document.getElementById("hintButton");
+
+                if (attempts > 0) {
+                    if (guess === currentWord) {
+                        message.textContent = "Congratulations! You guessed the word!";
+                    } else {
+                        attempts--;
+                        document.getElementById("attemptsLeft").textContent = attempts;
+                        message.textContent = "Incorrect guess. Try again.";
+
+                        if (attempts === 2) { // Display hint button when attempts reach 3
+                            hintButton.style.display = "inline"; // Show the hint button
                         }
-                        else {
-                            maxGuesses--;
-                            incorrects.push('${ key }');
 
+                        if (attempts === 0) { // Handle when attempts are exhausted
+                            hintButton.style.display = "none"; // Hide the hint button if attempts are used up
+                            message.textContent = `No more attempts left. The word was: ${currentWord}`;
                         }
                     }
                 }
-                wrongLetter.innerText = incorrects;
-                typinginput.value = "";
             }
 
-        randomWord();
-        resetBtn.addEventListener("click", randomWord);
-        typingInput.addEventListener("input", intGame);
-        document.addEventListener("keydown", () => typinginput.focus());
 
 
-    </script>
+            function displayHint() {
+                const hintElement = document.getElementById("hint");
+                const hintObj = animalWordsAndHints.find(obj => obj.word === currentWord);
+
+                if (hintObj) {
+                    hintElement.textContent = `Hint: ${hintObj.hint}`;
+                } else {
+                    hintElement.textContent = "No hint available for this word.";
+                }
+            }
+
+            function revealLetters(word) {
+                const len = word.length;
+                const numLettersToShow = Math.min(Math.floor(len / 2), 2); // Change the number of letters to show
+                const indices = [];
+
+                // Generate random indices to reveal letters
+                while (indices.length < numLettersToShow) {
+                    const index = Math.floor(Math.random() * len);
+                    if (!indices.includes(index)) {
+                        indices.push(index);
+                    }
+                }
+
+                // Reveal letters at random indices
+                let revealedWord = "";
+                for (let i = 0; i < len; i++) {
+                    if (indices.includes(i)) {
+                        revealedWord += word[i];
+                    } else {
+                        revealedWord += "_";
+                    }
+                }
+
+                return revealedWord;
+            }
+            // ... (previous code remains unchanged)
+
+            function startGame() {
+                const randomIndex = Math.floor(Math.random() * animalWordsAndHints.length);
+                currentWord = animalWordsAndHints[randomIndex].word;
+
+                // Display some letters of the word (here, showing the first and last letters)
+                const wordToGuess = revealLetters(currentWord);
+                document.getElementById("wordToGuess").textContent = wordToGuess;
+
+                document.getElementById("attemptsLeft").textContent = attempts;
+
+                // Display the number of letters in the word
+
+                document.getElementById("wordLength").textContent = `Word Length: ${currentWord.length}`;
+            }
+               
+
+
+
+
+
+        </script>
 </body>
-
-
 </html>
