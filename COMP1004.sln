@@ -1,43 +1,34 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34031.279
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "COMP1004", "..\..\..\COMP1004\", "{08498D60-803A-45FD-AC8F-CAF8AD15C706}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_56640"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\..\COMP1004\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_56640\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_56640"
-		Release.AspNetCompiler.PhysicalPath = "..\..\..\COMP1004\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_56640\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "56640"
-		SlnRelativePath = "..\..\..\COMP1004\"
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B8DB414E-BC27-4C4A-8DBC-9D76E8EEBC5F}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{08498D60-803A-45FD-AC8F-CAF8AD15C706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08498D60-803A-45FD-AC8F-CAF8AD15C706}.Debug|Any CPU.Build.0 = Debug|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4FA3B6E1-1E8F-4C1F-BC41-1FB49135DABC}
-	EndGlobalSection
-EndGlobal
+            };
+
+            // Functionality for Info Button
+            infoButton.addEventListener('click', () => {
+                showGameInfo(true); // Show game info when the info button is clicked
+            });
+
+            // Functionality for Back to Game Button on Info Page
+            backToGameBtn.addEventListener('click', () => {
+                showGameInfo(false); // Hide game info when back to game is clicked
+            });
+
+            // Functionality for Back to Login Button
+            backToLoginBtn.addEventListener('click', () => {
+                showLogin();
+            });
+
+            // Show login container by default
+            showLogin();
+        });
+
+
+
+        randomWord();
+        resetBtn.addEventListener("click", randomWord);
+        typingInput.addEventListener("input", intGame);
+        document.addEventListener("keydown", () => typinginput.focus());
+
+
+    </script>
+</body>
+
+</body>
+</html>
