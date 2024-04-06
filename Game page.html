@@ -1,296 +1,967 @@
-<!DOCTYPE html>
-<html lang="en">
+Game page.html
+@@ -1,194 +1,830 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Guess the word</title>
+    <meta name=" =viewport" content="width=device-width, initial-sclae=1.0">
+
 <head>
     <meta charset="UTF-8">
-    <title>Guess the Word</title>
+    <title>Guess the Animal Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  
-    <div class="container">
-        <div id="loginSection" class="section">
-            <h1>Login</h1>
-            <input type="text" id="firstName" placeholder="First Name" required>
-            <input type="text" id="lastName" placeholder="Last Name" required>
-            <input type="date" id="dob" placeholder="Date of Birth" required>
-            <input type="text" id="location" placeholder="Location" required>
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button onclick="authenticate()">Login</button>
-            <p id="loginError" class="error-msg"></p>
-        </div>
-
-        <div id="gameSection" class="section" style="display: none;">
-            <h1>Guess the Word Game</h1>
-            <p class="instruction">Guess the word: <span id="wordToGuess"></span></p>
-            <p class="instruction">Attempts left: <span id="attemptsLeft"></span></p>
-            <input type="text" id="guessInput" placeholder="Enter your guess">
-            <button onclick="checkGuess()">Check Guess</button>
-            <button id="hintButton" style="display: none;" onclick="displayHint()">Hint</button>
-            <p id="hint" class="instruction"></p>
-            <p id="message" class="error-msg"></p>
-            <p id="correctGuessCount" class="instruction">Correct Guesses: <span id="correctCount">0</span></p>
-            <button id="refreshButton" onclick="refreshGame()">Refresh</button>
+    <div class="Word">
+        <center><h1>Guess the word</h1></center>
+        <div class="content">
            
+           <input type="text" class="typing-input" maxlenght="1">
+           
+           <div class="inputs">
+               <input type="text" disabled>
+               <input type="text" disabled>
+               <input type="text" disabled>
+               <input type="text" disabled>
+               <input type="text" disabled>
+               <input type="text" disabled>
 
+               
+           </div>
+
+                
+
+           
+            <div class="details">
+                <p id="hint" class="hint">Hint: <span>Hint will be shown here</span></p>
+                <p id="guessLeft"class="guess-left">Remaining Guesses: <span></span></p>
+                <p id="wrongLetter"class="hint">Wrong letters: <span></span></p>
+    <div id="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <!-- Inside the #game-container div -->
+    <div id="game-container" style="display: none;">
+        <div class="controls-container">
+            <button id="start">Change animal</button>
+            <div id="score">Score: 0</div>
+            <div id="timePlayed">Time Played: 0 seconds</div>
         </div>
+
+        <div class="hint-ref">
+            <div id="wordHint">
+                <span>Hint: </span><span id="hint"></span>
+            </div>
+            <button class=" reset-btn">reset Game</button>
         </div>
 
-        <script src="script.js"></script>
-        <style>
+        <div id="user-input-section"></div>
+        <div id="result"></div>
+        <div id="word"></div>
+        <div id="message"></div>
+        <div id="letter-container"></div>
+
+        <div class="controls-container">
+            <!-- Add a button to go back to login -->
+            <button id="backToLogin">Back to Login</button>
+            <button id="infoButton">Info</button>
+        </div>
+    </div>
+    <div id="game-info" style="display: none;">
+        <h2>Game Information</h2>
+        <p>Welcome to the Guess the Animal Game!</p>
+        <p>This game challenges you to guess the names of different animals.</p>
+        <p>How to play:</p>
+        <ul>
+            <li>Click on 'Start Game' to begin guessing.</li>
+            <li>You have a limited number of chances to guess the animal's name.</li>
+            <li>Guess by clicking the letter buttons.</li>
+            <li>If you guess all the letters correctly, you win!</li>
+            <li>Click 'Back to Login' to return to the login page.</li>
+        </ul>
+        <!-- Button to go back to game -->
+        <button id="backToGame">Hide</button>
+    </div>
+
+
+    <script src="client.js"></script>
+    <script src="script.js"></script>
+    <script src="game.js"></script>
 
 
 
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f7f7f7;
-                margin: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
+
+
+    <style>
+        * {
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(120deg, #3498db, #2ecc71);
+        }
+
+        body {
+        .container {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #login-container, #game-container {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            text-align: center;
+            width: 45%;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .letters-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            min-height: 100vh;
+            background: #ffffff;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .Word {
+            width: 430px;
+            background: #ccc458;
+            border-radius: 10px;
+        .letters {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .Word h1 {
+                font-size: 25px;
+                font-weight: 500;
+                padding: 20px 25px;
+                border-bottom: 1px solid #808080;
+            .letters:hover {
+                background: #ecf0f1;
             }
 
-            .container {
-                width: 300px;
-                margin: 0 auto;
-                margin-top: 100px;
-                padding: 20px;
-                background-color: #f0f0f0;
-                border-radius: 5px;
-                text-align: center;
-            }
+            .Word .content {
+                margin: 25px 25px 35px;
+        #login-form input[type="text"],
+        #login-form input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
 
-            input[type="text"],
-            input[type="password"] {
-                width: 100%;
-                padding: 10px;
-                margin-top: 10px;
-                margin-bottom: 20px;
-                border-radius: 3px;
-                border: none;
+            #login-form input[type="text"]:focus,
+            #login-form input[type="password"]:focus {
+                border-color: #3498db;
                 outline: none;
             }
+            .content .typing-input {
+                opacity: 0;
+                z-index: -999;
+                position: absolute;
 
+        #login-form input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 18px;
+        }
 
-
-            .error-msg {
-                color: red;
-                margin-bottom: 20px;
+            #login-form input[type="submit"]:hover {
+                background-color: #2980b9;
             }
 
-            .instruction {
-                margin-bottom: 5px;
-                font-size: 18px;
-                color: #333;
+        .content .inputs {
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .inputs input {
+            height: 57px;
+            width: 56px;
+            margin: 4px;
+            color: #ff0000;
+            font-size: 24px;
+            font-weight: 500;
+        #start-page {
+            text-align: center;
+            background: none;
+            border-radius: 5px;
+            text-transform: uppercase;
+            border: 1px solid #808080;
+        }
+
+        inputs input:first-child {
+            margin-left: 0px;
+        #start-game-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        body {
+            background-image: url('Guess the word background img.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            #start-game-btn:hover {
+                background-color: #2980b9;
             }
 
-            input[type="submit"] {
-                width: 100%;
-                padding: 10px;
-                background-color: #000000;
-                color: red;
-                border: none;
-                border-radius: 3px;
-                cursor: pointer;
-                outline: none;
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
             }
 
-            button {
-                padding: 10px 20px;
-                margin-top: 10px;
-                background-color: #4caf50;
-                color: #fff;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CSS for animation, shake the letters when are worng */
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
             }
 
-                button:hover {
-                    background-color: #45a049;
-                }
+            20% {
+                transform: translateX(-10px);
+            }
+
+            40% {
+                transform: translateX(10px);
+            }
+
+            60% {
+                transform: translateX(-10px);
+            }
+
+            80% {
+                transform: translateX(10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .incorrect {
+            animation: shake 1.5s ease;
+        }
+
+        /* CSS for winning animation */
+        .win-animation {
+            color: #27ae60; /* Change color to green for winning */
+            animation: fadeInOut 2s ease-in-out;
+        }
+
+        .content.details {
+            margin: 20px 0 25px;
+        /* CSS for losing animation */
+        .lose-animation {
+            color: #c0392b; /* Change color to red for losing */
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .details p {
+            font-size: 19px;
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-10px);
+            }
+
+            20%, 40%, 60%, 80% {
+                transform: translateX(10px);
+            }
+        }
+
+        /* CSS for completed word animation */
+        .completed {
+            color: green; /* Change color to green when completed */
+            animation: scaleUp 0.5s ease-in-out;
+        }
+
+
+        #game-container {
+            display: none; /* Hide the game container by default */
+        }
+
+        #backToLogin {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+
+            #backToLogin:hover {
+                background-color: #2980b9;
+            }
+
+        #start {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .content .reset-btn {
+            width: 100%;
+            #start:hover {
+                background-color: #2980b9;
+            }
+        /*Info button stylyng*/
+        #infoButton {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+            color: #ff0000;
+            font-size: 17px;
+            padding: 15px 0;
+            background: #ccc458;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+            #infoButton:hover {
+                background-color: #2980b9;
+            }
+
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #info-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Style for the "Back to Game" button */
+        #backToGame {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+            #backToGame:hover {
+                background-color: #2980b9;
+            }
+    </style>
+    <script>
+        const inputs = document.querySelector("#inputs");
+        resetBtn = document.querySelector("#resetBtn");
+        hint = document.querySelector("#hint");
+        guessLeft = document.querySelector("#guessLeft");
+        wrongLetter = document.querySelector("#wrongLetter");
+        typingInput = document.querySelector("#typingInput");
 
 
           
-        </style>
-        <script>
-            const users = [
-                { username: "user1", password: "password1" },
-                { username: "user2", password: "password2" },
-            ];
+        let word, maxGuesses, corrects = [], incorrects = [];
 
-            function authenticate() {
-                const username = document.getElementById("username").value;
-                const password = document.getElementById("password").value;
-                const loginError = document.getElementById("loginError");
+        function randomword() {
+            document.getElementById("h1").style.color = "#FF00FF";
 
-                const authenticatedUser = users.find(user => user.username === username && user.password === password);
+            //Getting the random object from wordList
+            let ranObj = wordList[Math.floor(math.random() * wordList.lenght)];
+            word = ranObj.word; //Getting the word of a random object
+            maxGuesses = 8;
+            console.log(word);
 
-                if (authenticatedUser) {
-                    loginError.textContent = "";
-                    showGameSection();
-                } else {
-                    loginError.textContent = "Invalid username or password.";
-                }
+            hint.innerText = ranObj.hint;
+            guessLeft.innerText = maxGuesses;
+            let html = "";
+            for (let i = 0; index < word.lenght; i++) {
+                const element = array[i];
+                html = '<input type="text" disabled>';
             }
+            inputs.innerHTML = html;
+        }
+        function initGame(e) {
+            let key = e.target.value;
+            if (key.match(/^[A-Za-z]+$/) && !incorrects.include('${ key}')
+                && !corrects.include(key)) {
+                console.log(key);
+                if (word.includes(key)) {
+                    for (let i = 0; index < word.lenght; i++) {
+                        if (word[i] === key) {
+                            corrects.push(key); 
+                            inputs.querySelectorAll("input")[i].value = key;
 
-            function showGameSection() {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('gameSection').style.display = 'block';
-                startGame();
-            }
-   
-
-                
-
-            // Words and hints related to the animal kingdom
-            const animalWordsAndHints = [
-                { word: "elephant", hint: "A large mammal with a long trunk and tusks." },
-                { word: "giraffe", hint: "A tall, long-necked animal with distinct spotted patterns." },
-                { word: "zebra", hint: "A horse-like animal with black-and-white stripes." },
-                { word: "lion", hint: "A large carnivorous feline known as the king of the jungle." },
-                { word: "tiger", hint: "A powerful and striped big cat." },
-                { word: "Penguin", hint: "Flightless bird that swims in the Antarctic." },
-                { word: "Koala", hint: "Marsupial native to Australia known for eating eucalyptus leaves." },
-                { word: "Kangaroo", hint: "Marsupial that hops and carries its young in a pouch." },
-                { word: "Hippopotamus", hint: "Large herbivorous mammal found near water." },
-                { word: "Cheetah", hint: "Fastest land animal, known for its spots and speed." },
-                { word: "Polar Bear", hint: "Arctic dwelling bear with a white fur coat." },
-                { word: "Crocodile", hint: "Large reptile often found in tropical areas near water." },
-            ];
-            
-            let currentWord = "";
-            let attempts = 5;
-
-           
-            let totalAnimals = 12;
-            let correctGuesses = 0;
-
-           
-
-            function startGame() {
-                const randomIndex = Math.floor(Math.random() * animalWordsAndHints.length);
-                currentWord = animalWordsAndHints[randomIndex].word;
-
-                // Display some letters of the word (here, showing the first and last letters)
-                const wordToGuess = revealLetters(currentWord);
-                document.getElementById("wordToGuess").textContent = wordToGuess;
-
-                document.getElementById("attemptsLeft").textContent = attempts;
-            }
-
-            function checkGuess() {
-                const guess = document.getElementById("guessInput").value.trim().toLowerCase();
-                const message = document.getElementById("message");
-                const hintButton = document.getElementById("hintButton");
-                let isCorrectGuess = false;
-
-                if (attempts > 0) {
-                    if (guess === currentWord.toLowerCase()) {
-                        isCorrectGuess = true;
-                        correctGuesses++;
-                        document.getElementById("correctCount").textContent = correctGuesses;
-                    }
-
-                    if (isCorrectGuess) {
-                        message.textContent = "Congratulations! You guessed the word!";
-                    } else {
-                        attempts--;
-                        document.getElementById("attemptsLeft").textContent = attempts;
-                        message.textContent = "Incorrect guess. Try again.";
-
-                        if (attempts === 2) {
-                            hintButton.style.display = "inline";
                         }
+                        else {
+                            maxGuesses--;
+                            incorrects.push('${ key }');
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
 
-                        if (attempts === 0) {
-                            hintButton.style.display = "none";
-                            message.textContent = `No more attempts left. The word was: ${currentWord}`;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Check if the entered username and password match the valid user credentials
+            if (username === 'user123' && password === 'password123') {
+                // Redirect to the game page on successful login
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('game-container').style.display = 'block';
+                // init(); // Start the game after successful login
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+
+
+
+
+
+
+        let isLoggedIn = false;
+        let attempts = 5;
+        let failedAttempts = 0; // Track failed attempts
+        let showHint = false;
+        let currentAnimal = '';
+        let currentHint = '';
+        let winCount = 0;
+        let lossCount = 5;
+        let score = 0; // Initialize score
+        let secondsPlayed = 0; // Initialize seconds played
+
+
+        // Function to initialize the game after login
+        const initializeGame = () => {
+            // Show the game container
+            document.getElementById('game-container').style.display = 'block';
+
+            // Initialize the timer
+            startTimer();
+        };
+
+        // Call initializeGame function when the login form is submitted
+        document.getElementById('login-form').addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent form submission
+            // Perform login logic here
+            // Once login is successful, call initializeGame
+            initializeGame();
+        });
+
+        // Function to update the score
+        const updateScore = () => {
+            // Increment score for correct guess
+            score += 5; // Increment by 5 for correct guess
+            // Decrement score for incorrect guess
+            score -= 2; // Decrement by 2 for incorrect guess
+
+            // Ensure the score doesn't go below zero
+            if (score < 0) {
+                score = 0;
+            }
+
+            // Update the score display
+            console.log('New score:', score); // Log the new score
+            document.getElementById('score').innerText = `Score: ${score}`;
+        };
+
+        // Function to update the timer
+        const updateTimer = () => {
+            // Increment time played by 1 second
+            secondsPlayed++;
+
+            // Update the timer display
+            const minutes = Math.floor(secondsPlayed / 60);
+            const seconds = secondsPlayed % 60;
+            document.getElementById('timePlayed').innerText = `Time Played: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        };
+        // Function to start the timer
+        const startTimer = () => {
+            setInterval(updateTimer, 1000); // Call updateTimer every second
+        };
+
+
+
+
+
+
+
+
+        const animals = {
+            lion: "King of the jungle",
+            elephant: "Large mammal with tusks",
+            giraffe: "Tall spotted animal",
+            tiger: "Striped wildcat",
+            zebra: "Striped horse-like animal",
+            bear: "Large, furry mammal",
+            wolf: "Wild canine",
+            panda: "Black and white bear-like animal",
+            cheetah: "Fastest land animal",
+            rhinoceros: "Large herbivorous mammal with a horn",
+            hippopotamus: "Large semi-aquatic mammal",
+            gorilla: "Large ape",
+            kangaroo: "Marsupial that hops",
+            koala: "Marsupial that eats eucalyptus leaves",
+            sloth: "Slow-moving mammal",
+            orangutan: "Arboreal ape",
+            chimpanzee: "Great ape",
+            alligator: "Large reptile with a broad snout",
+            crocodile: "Large aquatic reptile",
+            ostrich: "Large flightless bird",
+            penguin: "Flightless aquatic bird",
+            flamingo: "Tall pink wading bird",
+            peacock: "Colorful bird with a fan-like tail",
+            parrot: "Colorful talking bird",
+            toucan: "Bird with a large colorful bill",
+            dolphin: "Intelligent aquatic mammal",
+            whale: "Giant marine mammal",
+            shark: "Predatory fish with sharp teeth",
+            octopus: "Eight-armed marine mollusk",
+            jellyfish: "Gelatinous marine animal",
+            seahorse: "Tiny fish with a distinctive shape",
+            starfish: "Marine animal with a star-shaped body",
+            lobster: "Crustacean with large pincers",
+            crab: "Crustacean with a broad carapace",
+            snail: "Slow-moving mollusk",
+            slug: "Mollusk without a shell",
+            butterfly: "Insect with colorful wings",
+            spider: "Eight-legged arachnid",
+            scorpion: "Venomous arachnid with a tail",
+            dragonfly: "Insect with four wings",
+            ladybug: "Small colorful beetle",
+            grasshopper: "Leaping insect",
+            antelope: "Gazelle-like mammal",
+            gazelle: "Small antelope",
+            ant: "Social insect",
+            termite: "Insect that feeds on wood",
+            beetle: "Insect with hard forewings",
+            mantis: "Predatory insect",
+            salamander: "Amphibian with a long body and tail",
+            newt: "Small amphibian",
+            axolotl: "Aquatic salamander",
+            chameleon: "Lizard capable of changing color",
+            iguana: "Large herbivorous lizard",
+            gecko: "Small lizard with sticky feet",
+            komodoDragon: "Large carnivorous lizard",
+            monitorLizard: "Large lizard found in Africa and Asia",
+            anaconda: "Large snake that squeezes its prey",
+            python: "Constrictor snake",
+            cobra: "Venomous snake",
+            rattlesnake: "Venomous pit viper",
+            boaConstrictor: "Large snake that constricts its prey",
+            kingCobra: "Highly venomous snake",
+            blackMamba: "Fast and highly venomous snake",
+            vulture: "Large bird that scavenges for food",
+            condor: "Massive vulture with a large wingspan",
+            eagle: "Large bird of prey",
+            hawk: "Bird of prey with excellent vision",
+            falcon: "Swift bird of prey",
+            owl: "Nocturnal bird of prey",
+            crow: "Black bird known for intelligence",
+            pigeon: "Common city bird",
+            seagull: "Coastal bird often seen at beaches",
+            pelican: "Large bird with a pouched bill",
+            flamingo: "Tall wading bird with pink feathers",
+            toucan: "Colorful bird with a large bill",
+            woodpecker: "Bird that pecks trees for insects",
+            pheasant: "Colorful game bird",
+            quail: "Small game bird",
+            ostrich: "Tall flightless bird",
+            emu: "Flightless bird native to Australia",
+            albatross: "Large seabird with a wingspan",
+            hummingbird: "Small bird capable of hovering",
+            parakeet: "Small parrot",
+            cockatoo: "Crested parrot",
+            macaw: "Colorful long-tailed parrot",
+            canary: "Small yellow songbird",
+            finch: "Small songbird",
+            blueJay: "Blue and white bird",
+            robin: "Small bird with a red breast",
+            sparrow: "Common small bird",
+            warbler: "Small bird known for its song",
+            wren: "Small bird with a melodious song",
+            nightingale: "Singing bird known for its beautiful song",
+            starling: "Bird with glossy black plumage",
+            thrush: "Songbird known for its beautiful voice",
+            oriole: "Colorful bird with a melodious song",
+            grosbeak: "Stocky songbird",
+            titmouse: "Small bird with a perky tail",
+            swan: "Graceful aquatic bird",
+            duck: "Waterfowl with a broad bill",
+            goose: "Waterfowl with a long neck",
+            flamingo: "Tall wading bird",
+            pelican: "Large bird with a pouched bill",
+            stork: "Tall long-legged bird",
+            ibis: "Long-legged wading bird",
+            heron: "Tall long-legged bird",
+            egret: "White heron",
+            spoonbill: "Bird with a flattened bill",
+            toucan: "Colorful bird with a large bill",
+            hornbill: "Large bird with a curved bill",
+            kingfisher: "Brightly colored bird that dives for fish",
+            woodpecker: "Bird that pecks trees for insects",
+            puffin: "Seabird with colorful bill",
+            guillemot: "Black and white seabird",
+            murre: "Seabird with black and white plumage",
+            auk: "Seabird",
+            razorbill: "Black and white seabird",
+            kittiwake: "Small gull-like bird",
+            tern: "Seabird with a forked tail",
+            skua: "Seabird that harasses other birds",
+            fulmar: "Seabird related to petrels",
+            shearwater: "Marine bird related to petrels",
+            petrel: "Seabird that spends most of its life at sea",
+            albatross: "Large seabird with a wingspan",
+            mackerel: "Predatory fish with striped patterns",
+            swordfish: "Large fish with a long bill-like snout",
+            barracuda: "Long, slender predatory fish",
+        };
+
+
+
+        const message = document.getElementById("message");
+        const hintRef = document.querySelector(".hint-ref");
+        const controls = document.querySelector(".controls-container");
+        const startBtn = document.getElementById("start");
+        const letterContainer = document.getElementById("letter-container");
+        const userInpSection = document.getElementById("user-input-section");
+        const resultText = document.getElementById("result");
+        const word = document.getElementById("word");
+        const animalKeys = Object.keys(animals);
+
+        const disableLetters = () => {
+            // Disable all letter buttons
+            const letterButtons = document.querySelectorAll(".letters");
+            letterButtons.forEach(button => {
+                button.disabled = true;
+            });
+
+            // Update UI to indicate game over and provide option to continue
+            word.innerHTML = `The animal was: <span>${currentAnimal}</span>`;
+            resultText.innerHTML = "Game Over";
+            startBtn.innerText = "Continue!";
+        };
+
+
+        // Generate random value
+        const generateRandomValue = (array) => Math.floor(Math.random() * array.length);
+
+        // Block all the buttons
+        const blocker = () => {
+            let lettersButtons = document.querySelectorAll(".letters");
+            stopGame();
+        };
+
+        // Stop Game
+        const stopGame = () => {
+            controls.classList.remove("hide");
+        };
+
+        // Generate Animal Function
+        const generateAnimal = () => {
+            letterContainer.classList.remove("hide");
+            userInpSection.innerText = "";
+            currentAnimal = animalKeys[generateRandomValue(animalKeys)];
+            currentHint = animals[currentAnimal];
+            hintRef.innerHTML = `<div id="wordHint">
+                                                                        <span>Hint: </span>${currentHint} </div>`;
+            let displayItem = "";
+            currentAnimal.split("").forEach((value) => {
+                displayItem += '<span class="inputSpace">_ </span>';
+            });
+
+            // Display each element as span
+            userInpSection.innerHTML = displayItem;
+            userInpSection.innerHTML += `<div id='chanceCount'>Chances Left: ${lossCount}</div>`;
+        };
+
+
+        const MAX_ATTEMPTS = 5; // Define the maximum number of attempts
+
+        // Function to handle attempts
+        const handleAttempt = () => {
+            MAX_ATTEMPTS--; // Decrement the number of attempts
+            updateAttemptsDisplay(); // Update the attempts display
+            if (MAX_ATTEMPTS === 0) {
+                // Handle when no attempts are left
+                disableLetters(); // Call the function to disable letter buttons or any other relevant actions
+            }
+
+        };
+        const updateAttemptsDisplay = () => {
+            document.getElementById("chanceCount").innerText = `Chances Left: ${MAX_ATTEMPTS}`;
+        };
+
+
+        // initial function
+        const init = () => {
+            winCount = 0;
+            lossCount = 5;
+            currentAnimal = "";
+            word.innerText = "";
+            currentHint = "";
+            message.innerText = "";
+            userInpSection.innerHTML = "";
+            letterContainer.classList.add("hide");
+            letterContainer.innerHTML = "";
+            generateAnimal();
+
+            // For creating letter buttons
+            for (let i = 65; i < 91; i++) {
+                let button = document.createElement("button");
+                button.classList.add("letters");
+
+                // Number to ASCII[A-Z]
+                button.innerText = String.fromCharCode(i);
+
+                // Character button onclick
+                button.addEventListener("click", () => {
+                    message.innerText = `Correct Letter`;
+                    message.style.color = "#008000";
+                    let charArray = currentAnimal.toUpperCase().split("");
+                    let inputSpace = document.getElementsByClassName("inputSpace");
+
+                    // If array contains clicked value replace the matched Dash with Letter
+                    if (charArray.includes(button.innerText)) {
+                        charArray.forEach((char, index) => {
+                            // If character in array is same as clicked button
+                            if (char === button.innerText) {
+                                button.classList.add("correct");
+                                // Replace dash with letter
+                                inputSpace[index].innerText = char;
+                                // Increment counter
+                                winCount += 1;
+                                // If winCount equals word length
+                                if (winCount == charArray.length) {
+                                    updateScore();
+                                    resultText.innerHTML = "Correct!";
+                                    startBtn.innerText = "Continue!";
+                                    // Block all buttons
+                                    blocker();
+                                }
+                            }
+                        });
+                    } else {
+                        // Lose count
+                        button.classList.add("incorrect");
+                        lossCount -= 1;
+                        document.getElementById("chanceCount").innerText = `Chances Left: ${lossCount}`;
+                        message.innerText = `Incorrect Letter`;
+                        message.style.color = "#ff0000";
+                        if (lossCount <= 0) {
+                            disableLetters(); // Call the function to disable letter buttons or any other relevant actions
                         }
                     }
                 }
+                wrongLetter.innerText = incorrects;
+                typinginput.value = "";
+                    // Disable clicked buttons
+                    button.disabled = true;
+                });
+
+                // Append generated buttons to the letters container
+                letterContainer.appendChild(button);
             }
+        };
 
 
 
 
-            function displayHint() {
-                const hintElement = document.getElementById("hint");
-                const hintObj = animalWordsAndHints.find(obj => obj.word === currentWord);
 
-                if (hintObj) {
-                    hintElement.textContent = `Hint: ${hintObj.hint}`;
-                } else {
-                    hintElement.textContent = "No hint available for this word.";
-                }
 
-                hintButton.style.display = "none"; 
-                
+        startBtn.addEventListener("click", () => {
+            controls.classList.add("hide");
+            init();
+        });
+
+        window.onload = () => {
+            init();
+        };
+
+
+        document.getElementById('backToLogin').addEventListener('click', function () {
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+        });
+
+        // Function to handle the login form submission
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === validUser.username && password === validUser.password) {
+                // Hide login container and show game container
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('game-container').style.display = 'block';
+                init(); // Start the game after successful login
+            } else {
+                alert('Invalid username or password');
             }
-
-            function revealLetters(word) {
-                const len = word.length;
-                const numLettersToShow = Math.min(Math.floor(len / 2), 2); // Change the number of letters to show
-                const indices = [];
-
-                // Generate random indices to reveal letters
-                while (indices.length < numLettersToShow) {
-                    const index = Math.floor(Math.random() * len);
-                    if (!indices.includes(index)) {
-                        indices.push(index);
-                    }
-                }
-
-                // Reveal letters at random indices
-                let revealedWord = "";
-                for (let i = 0; i < len; i++) {
-                    if (indices.includes(i)) {
-                        revealedWord += word[i];
-                    } else {
-                        revealedWord += "_";
-                    }
-                }
-
-                return revealedWord;
-            }
-            // ... (previous code remains unchanged)
-
-            function startGame() {
-                const randomIndex = Math.floor(Math.random() * animalWordsAndHints.length);
-                currentWord = animalWordsAndHints[randomIndex].word;
-
-                // Display some letters of the word (here, showing the first and last letters)
-                const wordToGuess = revealLetters(currentWord);
-                document.getElementById("wordToGuess").textContent = wordToGuess;
-
-                document.getElementById("attemptsLeft").textContent = attempts;
-
-                // Display the number of letters in the word
-
-                document.getElementById("wordLength").textContent = `Word Length: ${currentWord.length}`;
-            }
+        });
 
 
-            function refreshGame() {
-                attempts = 5; // Reset attempts
-                document.getElementById("attemptsLeft").textContent = attempts;
-                document.getElementById("guessInput").value = ""; // Clear guess input
-                document.getElementById("message").textContent = ""; // Clear message
-                document.getElementById("correctCount").textContent = `${correctGuesses}/${totalAnimals}`;
-                startGame();
 
-                const hintButton = document.getElementById("hintButton");
-                hintButton.style.display = "none"; // Hide hint button after refresh
 
-                resetHint();
-                const hintElement = document.getElementById("hint");
-                hintElement.textContent = ""; // Reset hint text
 
-               
-            }
-            
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginContainer = document.getElementById('login-container');
+            const gameContainer = document.getElementById('game-container');
+            const infoButton = document.getElementById('infoButton');
+            const backToGameBtn = document.getElementById('backToGame');
+            const backToLoginBtn = document.getElementById('backToLogin');
+            const gameInfoSection = document.getElementById('game-info');
 
-        </script>
+            // Function to show the login container and hide others
+            const showLogin = () => {
+                loginContainer.style.display = 'block';
+                gameContainer.style.display = 'none';
+            };
+
+            // Function to show the game container and hide others
+            const showGame = () => {
+                loginContainer.style.display = 'none';
+                gameContainer.style.display = 'block';
+                showGameInfo(false); // Hide game info when entering the game
+            };
+
+            // Function to show/hide game info section
+            const showGameInfo = (show) => {
+                gameInfoSection.style.display = show ? 'block' : 'none';
+            };
+
+            // Functionality for Info Button
+            infoButton.addEventListener('click', () => {
+                showGameInfo(true); // Show game info when the info button is clicked
+            });
+
+            // Functionality for Back to Game Button on Info Page
+            backToGameBtn.addEventListener('click', () => {
+                showGameInfo(false); // Hide game info when back to game is clicked
+            });
+
+            // Functionality for Back to Login Button
+            backToLoginBtn.addEventListener('click', () => {
+                showLogin();
+            });
+
+            // Show login container by default
+            showLogin();
+        });
+
+
+
+        randomWord();
+        resetBtn.addEventListener("click", randomWord);
+        typingInput.addEventListener("input", intGame);
+        document.addEventListener("keydown", () => typinginput.focus());
+
+
+    </script>
+</body>
+
 </body>
 </html>
 
+</html>
+   
