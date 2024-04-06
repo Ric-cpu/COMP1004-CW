@@ -1,3 +1,803 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Guess the Animal Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <!-- Inside the #game-container div -->
+    <div id="game-container" style="display: none;">
+        <div class="controls-container">
+            <button id="start">Change animal</button>
+            <div id="score">Score: 0</div>
+            <div id="timePlayed">Time Played: 0 seconds</div>
+        </div>
+
+        <div class="hint-ref">
+            <div id="wordHint">
+                <span>Hint: </span><span id="hint"></span>
+            </div>
+        </div>
+
+        <div id="user-input-section"></div>
+        <div id="result"></div>
+        <div id="word"></div>
+        <div id="message"></div>
+        <div id="letter-container"></div>
+
+        <div class="controls-container">
+            <!-- Add a button to go back to login -->
+            <button id="backToLogin">Back to Login</button>
+            <button id="infoButton">Info</button>
+        </div>
+    </div>
+    <div id="game-info" style="display: none;">
+        <h2>Game Information</h2>
+        <p>Welcome to the Guess the Animal Game!</p>
+        <p>This game challenges you to guess the names of different animals.</p>
+        <p>How to play:</p>
+        <ul>
+            <li>Click on 'Start Game' to begin guessing.</li>
+            <li>You have a limited number of chances to guess the animal's name.</li>
+            <li>Guess by clicking the letter buttons.</li>
+            <li>If you guess all the letters correctly, you win!</li>
+            <li>Click 'Back to Login' to return to the login page.</li>
+        </ul>
+        <!-- Button to go back to game -->
+        <button id="backToGame">Hide</button>
+    </div>
+
+
+    <script src="client.js"></script>
+    <script src="script.js"></script>
+    <script src="game.js"></script>
+
+
+
+
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(120deg, #3498db, #2ecc71);
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #login-container, #game-container {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            text-align: center;
+            width: 45%;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .letters-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .letters {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .letters:hover {
+                background: #ecf0f1;
+            }
+
+        #login-form input[type="text"],
+        #login-form input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+            #login-form input[type="text"]:focus,
+            #login-form input[type="password"]:focus {
+                border-color: #3498db;
+                outline: none;
+            }
+
+        #login-form input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 18px;
+        }
+
+            #login-form input[type="submit"]:hover {
+                background-color: #2980b9;
+            }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #start-page {
+            text-align: center;
+        }
+
+        #start-game-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+            #start-game-btn:hover {
+                background-color: #2980b9;
+            }
+
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CSS for animation, shake the letters when are worng */
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-10px);
+            }
+
+            40% {
+                transform: translateX(10px);
+            }
+
+            60% {
+                transform: translateX(-10px);
+            }
+
+            80% {
+                transform: translateX(10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .incorrect {
+            animation: shake 1.5s ease;
+        }
+
+        /* CSS for winning animation */
+        .win-animation {
+            color: #27ae60; /* Change color to green for winning */
+            animation: fadeInOut 2s ease-in-out;
+        }
+
+        /* CSS for losing animation */
+        .lose-animation {
+            color: #c0392b; /* Change color to red for losing */
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-10px);
+            }
+
+            20%, 40%, 60%, 80% {
+                transform: translateX(10px);
+            }
+        }
+
+        /* CSS for completed word animation */
+        .completed {
+            color: green; /* Change color to green when completed */
+            animation: scaleUp 0.5s ease-in-out;
+        }
+
+
+        #game-container {
+            display: none; /* Hide the game container by default */
+        }
+
+        #backToLogin {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+
+            #backToLogin:hover {
+                background-color: #2980b9;
+            }
+
+        #start {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+            #start:hover {
+                background-color: #2980b9;
+            }
+        /*Info button stylyng*/
+        #infoButton {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+            #infoButton:hover {
+                background-color: #2980b9;
+            }
+
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #info-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Style for the "Back to Game" button */
+        #backToGame {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+            #backToGame:hover {
+                background-color: #2980b9;
+            }
+    </style>
+    <script>
+
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Check if the entered username and password match the valid user credentials
+            if (username === 'user123' && password === 'password123') {
+                // Redirect to the game page on successful login
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('game-container').style.display = 'block';
+                // init(); // Start the game after successful login
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+
+
+
+
+
+
+        let isLoggedIn = false;
+        let attempts = 5;
+        let failedAttempts = 0; // Track failed attempts
+        let showHint = false;
+        let currentAnimal = '';
+        let currentHint = '';
+        let winCount = 0;
+        let lossCount = 5;
+        let score = 0; // Initialize score
+        let secondsPlayed = 0; // Initialize seconds played
+
+
+        // Function to initialize the game after login
+        const initializeGame = () => {
+            // Show the game container
+            document.getElementById('game-container').style.display = 'block';
+
+            // Initialize the timer
+            startTimer();
+        };
+
+        // Call initializeGame function when the login form is submitted
+        document.getElementById('login-form').addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent form submission
+            // Perform login logic here
+            // Once login is successful, call initializeGame
+            initializeGame();
+        });
+
+        // Function to update the score
+        const updateScore = () => {
+            // Increment score for correct guess
+            score += 5; // Increment by 5 for correct guess
+            // Decrement score for incorrect guess
+            score -= 2; // Decrement by 2 for incorrect guess
+
+            // Ensure the score doesn't go below zero
+            if (score < 0) {
+                score = 0;
+            }
+
+            // Update the score display
+            console.log('New score:', score); // Log the new score
+            document.getElementById('score').innerText = `Score: ${score}`;
+        };
+
+        // Function to update the timer
+        const updateTimer = () => {
+            // Increment time played by 1 second
+            secondsPlayed++;
+
+            // Update the timer display
+            const minutes = Math.floor(secondsPlayed / 60);
+            const seconds = secondsPlayed % 60;
+            document.getElementById('timePlayed').innerText = `Time Played: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        };
+        // Function to start the timer
+        const startTimer = () => {
+            setInterval(updateTimer, 1000); // Call updateTimer every second
+        };
+
+
+
+
+
+
+
+
+        const animals = {
+            lion: "King of the jungle",
+            elephant: "Large mammal with tusks",
+            giraffe: "Tall spotted animal",
+            tiger: "Striped wildcat",
+            zebra: "Striped horse-like animal",
+            bear: "Large, furry mammal",
+            wolf: "Wild canine",
+            panda: "Black and white bear-like animal",
+            cheetah: "Fastest land animal",
+            rhinoceros: "Large herbivorous mammal with a horn",
+            hippopotamus: "Large semi-aquatic mammal",
+            gorilla: "Large ape",
+            kangaroo: "Marsupial that hops",
+            koala: "Marsupial that eats eucalyptus leaves",
+            sloth: "Slow-moving mammal",
+            orangutan: "Arboreal ape",
+            chimpanzee: "Great ape",
+            alligator: "Large reptile with a broad snout",
+            crocodile: "Large aquatic reptile",
+            ostrich: "Large flightless bird",
+            penguin: "Flightless aquatic bird",
+            flamingo: "Tall pink wading bird",
+            peacock: "Colorful bird with a fan-like tail",
+            parrot: "Colorful talking bird",
+            toucan: "Bird with a large colorful bill",
+            dolphin: "Intelligent aquatic mammal",
+            whale: "Giant marine mammal",
+            shark: "Predatory fish with sharp teeth",
+            octopus: "Eight-armed marine mollusk",
+            jellyfish: "Gelatinous marine animal",
+            seahorse: "Tiny fish with a distinctive shape",
+            starfish: "Marine animal with a star-shaped body",
+            lobster: "Crustacean with large pincers",
+            crab: "Crustacean with a broad carapace",
+            snail: "Slow-moving mollusk",
+            slug: "Mollusk without a shell",
+            butterfly: "Insect with colorful wings",
+            spider: "Eight-legged arachnid",
+            scorpion: "Venomous arachnid with a tail",
+            dragonfly: "Insect with four wings",
+            ladybug: "Small colorful beetle",
+            grasshopper: "Leaping insect",
+            antelope: "Gazelle-like mammal",
+            gazelle: "Small antelope",
+            ant: "Social insect",
+            termite: "Insect that feeds on wood",
+            beetle: "Insect with hard forewings",
+            mantis: "Predatory insect",
+            salamander: "Amphibian with a long body and tail",
+            newt: "Small amphibian",
+            axolotl: "Aquatic salamander",
+            chameleon: "Lizard capable of changing color",
+            iguana: "Large herbivorous lizard",
+            gecko: "Small lizard with sticky feet",
+            komodoDragon: "Large carnivorous lizard",
+            monitorLizard: "Large lizard found in Africa and Asia",
+            anaconda: "Large snake that squeezes its prey",
+            python: "Constrictor snake",
+            cobra: "Venomous snake",
+            rattlesnake: "Venomous pit viper",
+            boaConstrictor: "Large snake that constricts its prey",
+            kingCobra: "Highly venomous snake",
+            blackMamba: "Fast and highly venomous snake",
+            vulture: "Large bird that scavenges for food",
+            condor: "Massive vulture with a large wingspan",
+            eagle: "Large bird of prey",
+            hawk: "Bird of prey with excellent vision",
+            falcon: "Swift bird of prey",
+            owl: "Nocturnal bird of prey",
+            crow: "Black bird known for intelligence",
+            pigeon: "Common city bird",
+            seagull: "Coastal bird often seen at beaches",
+            pelican: "Large bird with a pouched bill",
+            flamingo: "Tall wading bird with pink feathers",
+            toucan: "Colorful bird with a large bill",
+            woodpecker: "Bird that pecks trees for insects",
+            pheasant: "Colorful game bird",
+            quail: "Small game bird",
+            ostrich: "Tall flightless bird",
+            emu: "Flightless bird native to Australia",
+            albatross: "Large seabird with a wingspan",
+            hummingbird: "Small bird capable of hovering",
+            parakeet: "Small parrot",
+            cockatoo: "Crested parrot",
+            macaw: "Colorful long-tailed parrot",
+            canary: "Small yellow songbird",
+            finch: "Small songbird",
+            blueJay: "Blue and white bird",
+            robin: "Small bird with a red breast",
+            sparrow: "Common small bird",
+            warbler: "Small bird known for its song",
+            wren: "Small bird with a melodious song",
+            nightingale: "Singing bird known for its beautiful song",
+            starling: "Bird with glossy black plumage",
+            thrush: "Songbird known for its beautiful voice",
+            oriole: "Colorful bird with a melodious song",
+            grosbeak: "Stocky songbird",
+            titmouse: "Small bird with a perky tail",
+            swan: "Graceful aquatic bird",
+            duck: "Waterfowl with a broad bill",
+            goose: "Waterfowl with a long neck",
+            flamingo: "Tall wading bird",
+            pelican: "Large bird with a pouched bill",
+            stork: "Tall long-legged bird",
+            ibis: "Long-legged wading bird",
+            heron: "Tall long-legged bird",
+            egret: "White heron",
+            spoonbill: "Bird with a flattened bill",
+            toucan: "Colorful bird with a large bill",
+            hornbill: "Large bird with a curved bill",
+            kingfisher: "Brightly colored bird that dives for fish",
+            woodpecker: "Bird that pecks trees for insects",
+            puffin: "Seabird with colorful bill",
+            guillemot: "Black and white seabird",
+            murre: "Seabird with black and white plumage",
+            auk: "Seabird",
+            razorbill: "Black and white seabird",
+            kittiwake: "Small gull-like bird",
+            tern: "Seabird with a forked tail",
+            skua: "Seabird that harasses other birds",
+            fulmar: "Seabird related to petrels",
+            shearwater: "Marine bird related to petrels",
+            petrel: "Seabird that spends most of its life at sea",
+            albatross: "Large seabird with a wingspan",
+            mackerel: "Predatory fish with striped patterns",
+            swordfish: "Large fish with a long bill-like snout",
+            barracuda: "Long, slender predatory fish",
+        };
+
+
+
+        const message = document.getElementById("message");
+        const hintRef = document.querySelector(".hint-ref");
+        const controls = document.querySelector(".controls-container");
+        const startBtn = document.getElementById("start");
+        const letterContainer = document.getElementById("letter-container");
+        const userInpSection = document.getElementById("user-input-section");
+        const resultText = document.getElementById("result");
+        const word = document.getElementById("word");
+        const animalKeys = Object.keys(animals);
+
+        const disableLetters = () => {
+            // Disable all letter buttons
+            const letterButtons = document.querySelectorAll(".letters");
+            letterButtons.forEach(button => {
+                button.disabled = true;
+            });
+
+            // Update UI to indicate game over and provide option to continue
+            word.innerHTML = `The animal was: <span>${currentAnimal}</span>`;
+            resultText.innerHTML = "Game Over";
+            startBtn.innerText = "Continue!";
+        };
+
+
+        // Generate random value
+        const generateRandomValue = (array) => Math.floor(Math.random() * array.length);
+
+        // Block all the buttons
+        const blocker = () => {
+            let lettersButtons = document.querySelectorAll(".letters");
+            stopGame();
+        };
+
+        // Stop Game
+        const stopGame = () => {
+            controls.classList.remove("hide");
+        };
+
+        // Generate Animal Function
+        const generateAnimal = () => {
+            letterContainer.classList.remove("hide");
+            userInpSection.innerText = "";
+            currentAnimal = animalKeys[generateRandomValue(animalKeys)];
+            currentHint = animals[currentAnimal];
+            hintRef.innerHTML = `<div id="wordHint">
+                                                                        <span>Hint: </span>${currentHint} </div>`;
+            let displayItem = "";
+            currentAnimal.split("").forEach((value) => {
+                displayItem += '<span class="inputSpace">_ </span>';
+            });
+
+            // Display each element as span
+            userInpSection.innerHTML = displayItem;
+            userInpSection.innerHTML += `<div id='chanceCount'>Chances Left: ${lossCount}</div>`;
+        };
+
+
+        const MAX_ATTEMPTS = 5; // Define the maximum number of attempts
+
+        // Function to handle attempts
+        const handleAttempt = () => {
+            MAX_ATTEMPTS--; // Decrement the number of attempts
+            updateAttemptsDisplay(); // Update the attempts display
+            if (MAX_ATTEMPTS === 0) {
+                // Handle when no attempts are left
+                disableLetters(); // Call the function to disable letter buttons or any other relevant actions
+            }
+
+        };
+        const updateAttemptsDisplay = () => {
+            document.getElementById("chanceCount").innerText = `Chances Left: ${MAX_ATTEMPTS}`;
+        };
+
+
+        // initial function
+        const init = () => {
+            winCount = 0;
+            lossCount = 5;
+            currentAnimal = "";
+            word.innerText = "";
+            currentHint = "";
+            message.innerText = "";
+            userInpSection.innerHTML = "";
+            letterContainer.classList.add("hide");
+            letterContainer.innerHTML = "";
+            generateAnimal();
+
+            // For creating letter buttons
+            for (let i = 65; i < 91; i++) {
+                let button = document.createElement("button");
+                button.classList.add("letters");
+
+                // Number to ASCII[A-Z]
+                button.innerText = String.fromCharCode(i);
+
+                // Character button onclick
+                button.addEventListener("click", () => {
+                    message.innerText = `Correct Letter`;
+                    message.style.color = "#008000";
+                    let charArray = currentAnimal.toUpperCase().split("");
+                    let inputSpace = document.getElementsByClassName("inputSpace");
+
+                    // If array contains clicked value replace the matched Dash with Letter
+                    if (charArray.includes(button.innerText)) {
+                        charArray.forEach((char, index) => {
+                            // If character in array is same as clicked button
+                            if (char === button.innerText) {
+                                button.classList.add("correct");
+                                // Replace dash with letter
+                                inputSpace[index].innerText = char;
+                                // Increment counter
+                                winCount += 1;
+                                // If winCount equals word length
+                                if (winCount == charArray.length) {
+                                    updateScore();
+                                    resultText.innerHTML = "Correct!";
+                                    startBtn.innerText = "Continue!";
+                                    // Block all buttons
+                                    blocker();
+                                }
+                            }
+                        });
+                    } else {
+                        // Lose count
+                        button.classList.add("incorrect");
+                        lossCount -= 1;
+                        document.getElementById("chanceCount").innerText = `Chances Left: ${lossCount}`;
+                        message.innerText = `Incorrect Letter`;
+                        message.style.color = "#ff0000";
+                        if (lossCount <= 0) {
+                            disableLetters(); // Call the function to disable letter buttons or any other relevant actions
+                        }
+                    }
+                    // Disable clicked buttons
+                    button.disabled = true;
+                });
+
+                // Append generated buttons to the letters container
+                letterContainer.appendChild(button);
+            }
+        };
+
+
+
+
+
+
+        startBtn.addEventListener("click", () => {
+            controls.classList.add("hide");
+            init();
+        });
+
+        window.onload = () => {
+            init();
+        };
+
+
+        document.getElementById('backToLogin').addEventListener('click', function () {
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+        });
+
+        // Function to handle the login form submission
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === validUser.username && password === validUser.password) {
+                // Hide login container and show game container
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('game-container').style.display = 'block';
+                init(); // Start the game after successful login
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginContainer = document.getElementById('login-container');
+            const gameContainer = document.getElementById('game-container');
+            const infoButton = document.getElementById('infoButton');
+            const backToGameBtn = document.getElementById('backToGame');
+            const backToLoginBtn = document.getElementById('backToLogin');
+            const gameInfoSection = document.getElementById('game-info');
+
+            // Function to show the login container and hide others
+            const showLogin = () => {
+                loginContainer.style.display = 'block';
+                gameContainer.style.display = 'none';
+            };
+
+            // Function to show the game container and hide others
+            const showGame = () => {
+                loginContainer.style.display = 'none';
+                gameContainer.style.display = 'block';
+                showGameInfo(false); // Hide game info when entering the game
+            };
+
+            // Function to show/hide game info section
+            const showGameInfo = (show) => {
+                gameInfoSection.style.display = show ? 'block' : 'none';
             };
 
             // Functionality for Info Button
@@ -21,14 +821,10 @@
 
 
 
-        randomWord();
-        resetBtn.addEventListener("click", randomWord);
-        typingInput.addEventListener("input", intGame);
-        document.addEventListener("keydown", () => typinginput.focus());
 
 
     </script>
-</body>
 
 </body>
 </html>
+
