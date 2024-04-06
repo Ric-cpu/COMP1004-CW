@@ -44,6 +44,7 @@
             <!-- Add a button to go back to login -->
             <button id="backToLogin">Back to Login</button>
             <button id="infoButton">Info</button>
+            <button id="resetButton">Reset</button>
         </div>
     </div>
     <div id="game-info" style="display: none;">
@@ -334,6 +335,23 @@
             }
 
 
+        /*reset button button stylyng*/
+        #resetButton {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+            #resetButton:hover {
+                background-color: #2980b9;
+            }
+
 
         body {
             font-family: Arial, sans-serif;
@@ -401,6 +419,7 @@
         let lossCount = 5;
         let score = 0; // Initialize score
         let secondsPlayed = 0; // Initialize seconds played
+        let timerInterval;
 
 
         // Function to initialize the game after login
@@ -443,14 +462,45 @@
             secondsPlayed++;
 
             // Update the timer display
-            const minutes = Math.floor(secondsPlayed / 60);
-            const seconds = secondsPlayed % 60;
-            document.getElementById('timePlayed').innerText = `Time Played: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            updateTimerDisplay(secondsPlayed);
+
+            // Check if five minutes have passed
+            if (secondsPlayed >= 60) { // 60 seconds = 1 minute
+                clearInterval(timerInterval); // Stop the timer
+                disableLetters(); // Disable all letters
+            }
         };
+
+
         // Function to start the timer
         const startTimer = () => {
             setInterval(updateTimer, 1000); // Call updateTimer every second
         };
+
+        // Function to update the timer display
+        const updateTimerDisplay = (seconds) => {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            document.getElementById('timePlayed').innerText = `Time Played: ${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        };
+        
+        // Function to reset the game
+        const resetGame = () => {
+            clearInterval(timerInterval); // Stop the timer
+            secondsPlayed = 0; // Reset seconds played
+            score = 0; // Reset the score to 0
+            updateTimerDisplay(secondsPlayed); // Reset timer display
+            document.getElementById('score').innerText = 'Score: 0'; // Reset score display
+            enableLetters(); // Re-enable all letters
+            init(); // Reset the game elements
+        };
+
+
+
+
+        // Event listener for the reset button
+        document.getElementById('resetButton').addEventListener('click', resetGame);
+
 
 
 
@@ -827,4 +877,10 @@
 
 </body>
 </html>
+      
+   
+      
 
+    
+
+       
