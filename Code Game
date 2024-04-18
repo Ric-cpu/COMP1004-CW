@@ -896,7 +896,7 @@
 
 
         document.addEventListener('DOMContentLoaded', function () {
-            const gameDataUrl = '/gameData.json'; // This should work if your server root is COMP1004
+            const gameDataUrl = '/gameData.json'; 
 
             function fetchGameData() {
                 console.log("Attempting to fetch game data from", gameDataUrl);
