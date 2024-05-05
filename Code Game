@@ -388,12 +388,12 @@
             top: 0;
             left: 0;
             z-index: 10; /* Lower z-index if it doesn't need to be above other elements */
-            background: #fff; /* Assuming you want a white background */
+            background: #fff; /* white background */
             padding: 10px;
             margin: 0; /* Remove margin to fit exactly at the top left */
-            width: auto; /* Adjust the width as needed */
+            width: auto; /* Adjust the width */
             box-sizing: border-box; /* To ensure padding is included in width */
-            max-height: 100px; /* Limit the height to ensure it doesn't cover the game, adjust as needed */
+            max-height: 100px; /* Limit the height to ensure it doesn't cover the game */
             overflow: auto; /* Adds scrollbar if content exceeds the max-height */
         }
 
